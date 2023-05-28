@@ -14,24 +14,28 @@ public class TodoService {
         this.todoRepository = todoRepository;
     }
 
-    Todo createTodo(Todo newTodo) {
-        return null; // TODO
+    public Todo createTodo(Todo newTodo) {
+        return todoRepository.save(newTodo);
     }
 
     public List<Todo> getTodos() {
-        return null; // TODO
+        return todoRepository.findAll();
     }
 
     public Todo getTodo(Long id) throws NotFoundException {
-        return null; // TODO
+        return todoRepository.findById(id)
+                             .orElseThrow(() -> new NotFoundException("Unable to find TODO with id " + id + "."));
     }
 
-    public Todo updateTodo(Long id, Todo updatedTodo) {
-        return null; // TODO
+    // TODO Make transactional
+    public Todo updateTodo(Long id, Todo updatedTodo) throws NotFoundException {
+        Todo todo = getTodo(id);
+        todo.setText(updatedTodo.getText());
+        todo.setCompleted(updatedTodo.getCompleted());
+        return todoRepository.save(todo);
     }
 
     public void deleteTodo(Long id) {
-        // TODO
+        todoRepository.deleteById(id);
     }
-
 }

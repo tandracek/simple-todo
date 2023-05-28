@@ -1,7 +1,12 @@
 package com.pebblepost.todo;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import javassist.NotFoundException;
 
 @RestController()
 @RequestMapping("/todos")
@@ -26,28 +31,38 @@ public class TodoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TodoDto create(@RequestBody TodoDto createDto) {
-        return null; // TODO
+        Todo todo = this.todoService.createTodo(createDto.toEntity());
+        return TodoDto.fromEntity(todo);
     }
 
     @GetMapping
     public List<TodoDto> getAll() {
-        return null; // TODO
+        return this.todoService.getTodos()
+            .stream()
+            .map(TodoDto::fromEntity)
+            .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public TodoDto getOne(@PathVariable("id") Long id) {
-        return null; // TODO
+    public TodoDto getOne(@PathVariable("id") Long id) throws NotFoundException {
+        return TodoDto.fromEntity(this.todoService.getTodo(id));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public TodoDto put(@PathVariable("id") Long id, @RequestBody TodoDto updated) {
-        return null; // TODO
+    public TodoDto put(@PathVariable("id") Long id, @RequestBody TodoDto updated) throws NotFoundException {
+        return TodoDto.fromEntity(this.todoService.updateTodo(id, updated.toEntity()));
     }
 
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable("id") Long id) {
-        // TODO
+        this.todoService.deleteTodo(id);
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> handleNotFoundException(NotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(exception.getMessage());
+    }
 }
