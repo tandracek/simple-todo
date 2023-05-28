@@ -35,6 +35,7 @@ export default function TodoSection() {
 
   return (
     <>
+      <h4>TODOS: {todos.length}</h4>
       <TodoCreate onCreate={handleCreate} />
       <Todos todos={todos}
              onUpdateTodo={handleUpdate} />
