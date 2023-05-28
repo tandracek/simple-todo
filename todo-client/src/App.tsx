@@ -1,13 +1,12 @@
-import logo from './logo.svg';
+import React from "react";
 import './App.css';
+import TodoSection from "./components/TodoSection";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-        </p>
+        <TodoSection />
       </header>
     </div>
   );

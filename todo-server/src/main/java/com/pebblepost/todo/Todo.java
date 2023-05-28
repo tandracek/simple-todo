@@ -80,6 +80,17 @@ public class Todo {
         return new Builder();
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+            " id='" + getId() + "'" +
+            ", text='" + getText() + "'" +
+            ", completed='" + isCompleted() + "'" +
+            ", createdAt='" + getCreatedAt() + "'" +
+            ", modifiedAt='" + getModifiedAt() + "'" +
+            "}";
+    }
+
     public static class Builder {
         private Long id;
         private String text;
