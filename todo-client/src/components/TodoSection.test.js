@@ -1,7 +1,6 @@
 import {fireEvent, render, screen, waitFor} from '@testing-library/react';
 import Client from '../client';
 import TodoSection from './TodoSection';
-import assert from 'assert';
 
 describe("TodoSection", () => {
     const client = new Client("mockme");

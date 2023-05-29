@@ -9,7 +9,6 @@ interface TodoSectionProps {
   client: Client
 }
 
-// TODO Pass in the client instead
 export default function TodoSection(props: TodoSectionProps) {
   const {client} = props;
 

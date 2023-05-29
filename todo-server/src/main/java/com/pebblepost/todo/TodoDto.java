@@ -3,7 +3,10 @@ package com.pebblepost.todo;
 import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+@JsonDeserialize(builder = TodoDto.Builder.class)
 public class TodoDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -67,10 +70,11 @@ public class TodoDto {
             .build();
     }
 
-    private static Builder builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
+    @JsonPOJOBuilder(withPrefix = "")
     public static class Builder {
         private Long id;
         private String text;
