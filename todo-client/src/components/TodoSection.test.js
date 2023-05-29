@@ -24,7 +24,7 @@ describe("TodoSection", () => {
       const counter = todoSection.getByTitle("counter");
 
       todoSection.getByText("Test TODO");
-      expect(counter.innerHTML).toBe("TODOS: 1");
+      expect(counter.innerHTML).toBe("Active TODOS: 1");
     });
 
     let completedCheckbox = todoSection.getByRole("checkbox", {id: "completed-1"});
