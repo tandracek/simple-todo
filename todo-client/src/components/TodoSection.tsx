@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import {useState} from "react";
-import { Todo } from "../types";
+import {Todo} from "../types";
 import Client from "../client";
 import TodoList from "./TodoList";
 
