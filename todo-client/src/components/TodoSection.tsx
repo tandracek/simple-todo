@@ -5,6 +5,7 @@ import client from "../client";
 
 type Optional<T> = T | null
 
+// TODO Pass in the client instead
 export default function TodoSection() {
   const [todos, setTodos] = useState<Todo[]>([]);
 
