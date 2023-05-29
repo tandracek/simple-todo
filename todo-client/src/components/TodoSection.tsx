@@ -1,12 +1,18 @@
 import React, { useEffect } from "react";
 import {useState} from "react";
 import { Todo } from "../types";
-import client from "../client";
+import Client from "../client";
 
 type Optional<T> = T | null
 
+interface TodoSectionProps {
+  client: Client
+}
+
 // TODO Pass in the client instead
-export default function TodoSection() {
+export default function TodoSection(props: TodoSectionProps) {
+  const {client} = props;
+
   const [todos, setTodos] = useState<Todo[]>([]);
 
   // TODO implement loading indicator
@@ -44,7 +50,7 @@ export default function TodoSection() {
 
   return (
     <div>
-      <h4>TODOS: {todos.length}</h4>
+      <h4 title="counter">TODOS: {todos.length}</h4>
       <TodoCreate onCreate={handleCreate} />
       <Todos todos={todos}
              onUpdateTodo={handleUpdate}
@@ -75,9 +81,11 @@ function TodoCreate(props: TodoCreateProps) {
     <div>
       <input type="text"
              value={text}
+             id="create-input"
              onChange={handleTextChange}
              style={{marginRight: "1rem"}} />
       <button type="button"
+              id="create-button"
               onClick={handleCreate}>
         Create
       </button>

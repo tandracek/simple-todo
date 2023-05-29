@@ -1,23 +1,27 @@
 import {Todo, TodoTemplate} from "./types";
 
-const url = "http://localhost:8080";
+export default class Client {
+  url: string
 
-export default {
+  constructor(url: string) {
+    this.url = url;
+  }
+
   async getAllTodos(): Promise<Todo[]> {
-    return getJson(`${url}/todos`);
-  },
+    return getJson(`${this.url}/todos`);
+  }
 
   async updateTodo(id: number, todo: Todo): Promise<Todo> {
-    return putJson(`${url}/todos/${id}`, todo);
-  },
+    return putJson(`${this.url}/todos/${id}`, todo);
+  }
 
   async createTodo(todo: TodoTemplate): Promise<Todo> {
-    return postJson(`${url}/todos`, todo);
-  },
+    return postJson(`${this.url}/todos`, todo);
+  }
 
   async deleteTodo(id: number): Promise<void> {
-    return deleteItem(`${url}/todos/${id}`);
-  }
+    return deleteItem(`${this.url}/todos/${id}`);
+  }  
 }
 
 async function getJson(url) {
