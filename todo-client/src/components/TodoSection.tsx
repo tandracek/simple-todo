@@ -50,9 +50,11 @@ export default function TodoSection(props: TodoSectionProps) {
     fetchTodos();
   }, []);
 
+  const activeTodos = todos.filter(todo => !todo.completed);
+
   return (
     <div style={{width: "50%"}}>
-      <h4 title="counter" style={{textAlign: "center"}}>TODOS: {todos.length}</h4>
+      <h4 title="counter" style={{textAlign: "center"}}>Active TODOS: {activeTodos.length}</h4>
       <TodoCreate onCreate={handleCreate} />
       <TodoList todos={todos}
                 onUpdateTodo={handleUpdate}
