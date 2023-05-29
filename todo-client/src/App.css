@@ -1,8 +1,4 @@
-.App {
-  text-align: center;
-}
-
-.App-header {
+.todo-main {
   background-color: white;
   min-height: 100vh;
   display: flex;
@@ -11,4 +7,5 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: black;
+  text-align: center;
 }

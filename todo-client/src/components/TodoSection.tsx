@@ -29,17 +29,26 @@ export default function TodoSection() {
       });
   }
 
+  const handleDelete = (id: number) => {
+    client.deleteTodo(id)
+      .then(() => {
+        const updatedTodos = todos.filter(todo => todo.id !== id);
+        setTodos(updatedTodos);
+      });
+  }
+
   useEffect(() => {
     fetchTodos();
   }, []);
 
   return (
-    <>
+    <div>
       <h4>TODOS: {todos.length}</h4>
       <TodoCreate onCreate={handleCreate} />
       <Todos todos={todos}
-             onUpdateTodo={handleUpdate} />
-    </>
+             onUpdateTodo={handleUpdate}
+             onDelete={handleDelete} />
+    </div>
   )
 }
 
@@ -78,16 +87,18 @@ function TodoCreate(props: TodoCreateProps) {
 interface TodosProps {
   todos: Todo[]
   onUpdateTodo: (todo: Todo) => void
+  onDelete: (id: number) => void
 }
 
 function Todos(props: TodosProps) {
-  const {todos, onUpdateTodo} = props;
+  const {todos, onUpdateTodo, onDelete} = props;
 
   const todoEntries = todos.map(todo => (<TodoEntry key={todo.id}
                                                     todo={todo}
-                                                    onUpdateTodo={onUpdateTodo} />));
+                                                    onUpdateTodo={onUpdateTodo}
+                                                    onDelete={onDelete} />));
   return (
-    <div>
+    <div style={{marginTop: "1rem"}}>
       {todoEntries}
     </div>
   );
@@ -96,14 +107,16 @@ function Todos(props: TodosProps) {
 interface TodoEntryProps {
   todo: Todo
   onUpdateTodo: (todo: Todo) => void
+  onDelete: (id: number) => void
 }
 
 function TodoEntry(props: TodoEntryProps) {
-  const {todo, onUpdateTodo} = props;
+  const {todo, onUpdateTodo, onDelete} = props;
 
-  const {completed, text} = todo;
+  const {completed, text, id} = todo;
 
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [showDelete, setShowDelete] = useState<boolean>(false);
   const [editText, setEditText] = useState<Optional<string>>(text);
 
   const handleCompletedChange = event => {
@@ -139,10 +152,20 @@ function TodoEntry(props: TodoEntryProps) {
            onChange={handleTextChange} />
   );
 
-  const textView = editMode ? editBox : (<p>{text}</p>);
+  const deleteButton = (
+    <button type="button"
+            onClick={() => onDelete(id)}
+            style={{marginLeft: "1rem"}}>
+      Delete
+    </button>
+  );
+
+  const textView = editMode ? editBox : text;
 
   return (
-    <div>
+    <div style={{border: "1px solid black", padding: ".5rem"}}
+         onMouseEnter={() => setShowDelete(true)}
+         onMouseLeave={() => setShowDelete(false)}>
       <input type="checkbox"
              checked={completed}
              onChange={handleCompletedChange}
@@ -150,6 +173,9 @@ function TodoEntry(props: TodoEntryProps) {
       <div onClick={handleTextClick}
            style={{display: "inline-block", marginLeft: "1rem"}}>
         {textView}
+      </div>
+      <div style={{display: "inline-block"}}>
+        {showDelete ? deleteButton : null}
       </div>
     </div>
   );
