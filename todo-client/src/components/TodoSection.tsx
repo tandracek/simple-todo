@@ -48,8 +48,8 @@ export default function TodoSection(props: TodoSectionProps) {
   }, []);
 
   return (
-    <div>
-      <h4 title="counter">TODOS: {todos.length}</h4>
+    <div style={{width: "50%"}}>
+      <h4 title="counter" style={{textAlign: "center"}}>TODOS: {todos.length}</h4>
       <TodoCreate onCreate={handleCreate} />
       <Todos todos={todos}
              onUpdateTodo={handleUpdate}
@@ -77,7 +77,7 @@ function TodoCreate(props: TodoCreateProps) {
   }
 
   return (
-    <div>
+    <div style={{textAlign: "center"}}>
       <input type="text"
              value={text}
              id="create-input"
@@ -183,7 +183,7 @@ function TodoEntry(props: TodoEntryProps) {
            style={{display: "inline-block", marginLeft: "1rem"}}>
         {textView}
       </div>
-      <div style={{display: "inline-block"}}>
+      <div style={{display: "inline-block", float: "right", verticalAlign: "middle"}}>
         {showDelete ? deleteButton : null}
       </div>
     </div>
