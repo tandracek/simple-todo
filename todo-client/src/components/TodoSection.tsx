@@ -176,6 +176,7 @@ function TodoEntry(props: TodoEntryProps) {
          onMouseEnter={() => setShowDelete(true)}
          onMouseLeave={() => setShowDelete(false)}>
       <input type="checkbox"
+             id={`completed-${id}`}
              checked={completed}
              onChange={handleCompletedChange}
              style={{display: "inline-block"}} />

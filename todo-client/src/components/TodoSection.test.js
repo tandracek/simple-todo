@@ -5,21 +5,35 @@ import assert from 'assert';
 
 describe("TodoSection", () => {
     const client = new Client("mockme");
-    test("Create TODO", async () => {
+    test("Create and update", async () => {
         jest.spyOn(client, "createTodo")
             .mockImplementation(todoTemplate => (Promise.resolve({...todoTemplate, id: 1, createdAt: "", modifiedAt: ""})));
 
+        jest.spyOn(client, "updateTodo")
+            .mockImplementation((id, todo) => {
+                expect(id).toBe(1);
+                return Promise.resolve(todo);
+            });
+
         const todoSection = render(<TodoSection client={client} />);
-        const createInput = screen.getByRole("textbox", {id: "create-input"});
+        const createInput = todoSection.getByRole("textbox", {id: "create-input"});
         fireEvent.change(createInput, {target: {value: "Test TODO"}});
-        const createButton = screen.getByRole("button", {id: "create-button"});
+        const createButton = todoSection.getByRole("button", {id: "create-button"});
         fireEvent.click(createButton);
 
         await waitFor(() => {
-            const counter = screen.getByTitle("counter");
+            const counter = todoSection.getByTitle("counter");
 
-            screen.getByText("Test TODO");
+            todoSection.getByText("Test TODO");
             expect(counter.innerHTML).toBe("TODOS: 1");
+        });
+
+        let completedCheckbox = todoSection.getByRole("checkbox", {id: "completed-1"});
+        fireEvent.click(completedCheckbox);
+
+        await waitFor(async () => {
+            completedCheckbox = await todoSection.getByRole("checkbox", {id: "completed-1"});
+            expect(completedCheckbox.checked).toBe(true);
         });
     });
 });
