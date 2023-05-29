@@ -16,7 +16,8 @@ export default function TodoSection(props: TodoSectionProps) {
   // TODO implement loading indicator
   const fetchTodos = () => {
     client.getAllTodos()
-        .then(todos => setTodos(todos));
+        .then(todos => setTodos(todos))
+        .catch(error => alert(error));
   }
 
   const handleUpdate = (todo: Todo) => {
@@ -25,13 +26,15 @@ export default function TodoSection(props: TodoSectionProps) {
           const updatedTodos = todos.map(t => (t.id === todo.id ? todo : t));
           setTodos(updatedTodos);
         })
+        .catch(error => alert(error));
   }
 
   const handleCreate = (text: string) => {
     client.createTodo({text, completed: false})
       .then(todo => {
         setTodos([...todos, todo]);
-      });
+      })
+      .catch(error => alert(error));
   }
 
   const handleDelete = (id: number) => {
@@ -39,7 +42,8 @@ export default function TodoSection(props: TodoSectionProps) {
       .then(() => {
         const updatedTodos = todos.filter(todo => todo.id !== id);
         setTodos(updatedTodos);
-      });
+      })
+      .catch(error => alert(error));
   }
 
   useEffect(() => {
